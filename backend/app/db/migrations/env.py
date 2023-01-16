@@ -1,3 +1,4 @@
+from app.core.config import get_app_settings  # isort:skip
 import pathlib
 import sys
 from logging.config import fileConfig
@@ -5,9 +6,10 @@ from logging.config import fileConfig
 from alembic import context
 from sqlalchemy import engine_from_config, pool
 
+from app.db.base_class import Base
+
 sys.path.append(str(pathlib.Path(__file__).resolve().parents[3]))
 
-from app.core.config import get_app_settings  # isort:skip
 
 SETTINGS = get_app_settings()
 
@@ -19,7 +21,7 @@ config = context.config
 
 fileConfig(config.config_file_name)  # type: ignore
 
-target_metadata = None
+target_metadata = Base.metadata
 
 config.set_main_option("sqlalchemy.url", str(DATABASE_URL))
 
