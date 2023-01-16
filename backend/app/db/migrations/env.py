@@ -5,9 +5,9 @@ from logging.config import fileConfig
 from alembic import context
 from sqlalchemy import engine_from_config, pool
 
-
 sys.path.append(str(pathlib.Path(__file__).resolve().parents[3]))
 
+from app.core.config import get_app_settings  # isort:skip
 
 SETTINGS = get_app_settings()
 
