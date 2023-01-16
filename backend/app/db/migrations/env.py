@@ -1,4 +1,3 @@
-from app.core.config import get_app_settings  # isort:skip
 import pathlib
 import sys
 from logging.config import fileConfig
