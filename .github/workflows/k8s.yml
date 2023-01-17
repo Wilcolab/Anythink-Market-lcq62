@@ -175,3 +175,6 @@ jobs:
       - name: Deploy
         run: |
           echo "todo: setup armory GHA"
+      - name: Armory Continuous Deployment-as-a-Service
+        uses: armory/cli-deploy-action@v1.0.0
+
