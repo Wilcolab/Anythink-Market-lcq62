@@ -2,6 +2,7 @@ from typing import Optional
 
 from fastapi import APIRouter, Body, Depends, HTTPException, Response
 from starlette import status
+import openai
 
 from app.api.dependencies.items import (
     check_item_modification_permissions,
@@ -75,7 +76,7 @@ async def create_new_item(
         body=item_create.body,
         seller=user,
         tags=item_create.tags,
-        image=item_create.image
+        image=item_create.image if item_create.image else get_image(item_create.title)
     )
     send_event('item_created', {'item': item_create.title})
     return ItemInResponse(item=ItemForResponse.from_orm(item))
@@ -120,3 +121,11 @@ async def delete_item_by_slug(
     items_repo: ItemsRepository = Depends(get_repository(ItemsRepository)),
 ) -> None:
     await items_repo.delete_item(item=item)
+
+def get_image(title):
+    response = openai.Image.create(
+        prompt=title,
+        n=1,
+        size="256x256"
+    )
+    image_url = response['data'][0]['url']  
